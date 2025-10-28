@@ -22,6 +22,7 @@ export const gitHubService = async (repoName: string, isOneRepo: boolean) => {
             return response.data;
         } catch (error) {
             console.log(error)
+            throw error
         }
     }
 }
