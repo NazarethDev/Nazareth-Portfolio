@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { FontAwesome6 } from '@expo/vector-icons';
 
+import StackRoutes from "./StackNavigationRoutes"
+
 import { Resume } from '../screens/Resume';
 import { RepoList } from '../screens/RepoList';
 import { Contact } from '../screens/Contact';
@@ -12,10 +14,11 @@ export function BottomTabsRoutes() {
     return (
         <Navigator screenOptions={{
             tabBarStyle: {
-                backgroundColor: '#010101'
+                backgroundColor: '#191918'
 
             },
-            tabBarActiveTintColor: '#ffffff'
+            tabBarActiveTintColor: '#2A62FD',
+            tabBarInactiveTintColor: '#eeeeee'
         }}>
             <Screen
                 name='Resume'
@@ -26,20 +29,20 @@ export function BottomTabsRoutes() {
                         <FontAwesome6
                             name="file-lines"
                             size={size}
-                            color='#ffffff' />
+                            color={color} />
                     )
                 }}
             />
             <Screen
                 name='Repositories'
-                component={RepoList}
+                component={StackRoutes}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome6
                             name="code"
                             size={size}
-                            color='#ffffff' />
+                            color={color} />
                     )
                 }}
             />
@@ -52,7 +55,7 @@ export function BottomTabsRoutes() {
                         <FontAwesome6
                             name="phone"
                             size={size}
-                            color='#ffffff' />
+                            color={color} />
                     )
                 }}
             />

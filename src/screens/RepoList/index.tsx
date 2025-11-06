@@ -1,23 +1,34 @@
-import { View, Text, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
 import { gitHubService } from '../../services/gitHubService';
 import { styles } from './styles'
 
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../routes/StackNavigationRoutes";
+
 import { useState, useEffect } from 'react';
+
+type RepoListNavigationProp = NativeStackNavigationProp<
+    RootStackParamList,
+    "RepoList"
+>;
 
 export function RepoList() {
 
     const [repos, setRepos] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const navigation = useNavigation<RepoListNavigationProp>();
+
     useEffect(() => {
         async function fetchRepos() {
             try {
                 const data = await gitHubService('', false);
 
-                const simplifiedData = data.map((repo:any)=> ({
+                const simplifiedData = data.map((repo: any) => ({
                     name: repo.name,
                     description: repo.description,
-                    language:repo.language, 
+                    language: repo.language,
                 }));
 
                 setRepos(simplifiedData);
@@ -27,7 +38,6 @@ export function RepoList() {
                 setLoading(false);
             }
         }
-
         fetchRepos();
 
     }, []);
@@ -44,11 +54,14 @@ export function RepoList() {
     return (
         <ScrollView contentContainerStyle={styles.mainContainer}>
             {repos.map((repo, index) => (
-                <View key={index} style={styles.repoContainer}>
-                    <Text style={styles.repoName}>{repo.name.replace('-', ' ')}</Text>
+                <TouchableOpacity
+                    key={index}
+                    style={styles.repoContainer}
+                    onPress={() => navigation.navigate('Readme', { repoName: repo.name })}>
+                    <Text style={styles.repoName}>{repo.name.replace(/-/g, ' ')}</Text>
                     <Text style={styles.repoDescriprion}>{repo.description ?? 'No discription available'}</Text>
                     <Text style={styles.repoLanguages}>{repo.language ?? 'No language information'}</Text>
-                </View>
+                </TouchableOpacity>
             ))}
         </ScrollView>
     )
