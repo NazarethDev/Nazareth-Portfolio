@@ -6,7 +6,7 @@ export const gitHubService = async (repoName: string, isOneRepo: boolean) => {
     if (isOneRepo) {
         try {
             const response = await axios.get(
-                GITHUB_BASE_URL_ONE_REPO + repoName
+                `${GITHUB_BASE_URL_ONE_REPO}${repoName}/contents/readme.md`
             )
             console.log(response)
             return response.data;
